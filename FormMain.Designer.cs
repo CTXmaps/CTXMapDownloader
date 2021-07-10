@@ -52,7 +52,7 @@ namespace CTXMapDownloader
             this.textBoxAddress.Name = "textBoxAddress";
             this.textBoxAddress.Size = new System.Drawing.Size(180, 20);
             this.textBoxAddress.TabIndex = 1;
-            this.textBoxAddress.Text = "192.168.1.35";
+            this.textBoxAddress.Text = "";
             //
             // labelStatus
             //

@@ -96,6 +96,7 @@ namespace CTXMapDownloader
         {
             gamePath = path;
             Properties.Settings.Default.gamepath = gamePath;
+            Properties.Settings.Default.Save();
         }
 
         public static bool IsGameFolderValid()
