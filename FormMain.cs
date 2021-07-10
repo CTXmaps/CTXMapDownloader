@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CTXMapDownloader
 {
-	public partial class FormMain : Form
-	{
+    public partial class FormMain : Form
+    {
         public static FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
         public static FormMain Instance;
 
@@ -20,13 +14,13 @@ namespace CTXMapDownloader
         private const int HT_CAPTION = 0x2;
         private bool buttonDownload = true;
 
-		public FormMain()
-		{
+        public FormMain()
+        {
             Instance = this;
-			InitializeComponent();
+            InitializeComponent();
             InitializeStaticComponents();
-            Config.Initialize();            
-		}
+            Config.Initialize();
+        }
 
         private static void InitializeStaticComponents()
         {
@@ -35,7 +29,7 @@ namespace CTXMapDownloader
         }
 
         private void buttonExit_Click( object sender, EventArgs e )
-        {     
+        {
             Application.Exit();
         }
 
@@ -61,19 +55,19 @@ namespace CTXMapDownloader
 
         private void buttonConn_Click( object sender, EventArgs e )
         {
-			if ( buttonDownload )
-			{
-				if ( !Config.IsGameFolderValid() )
-					return;
+            if ( buttonDownload )
+            {
+                if ( !Config.IsGameFolderValid() )
+                    return;
 
-				buttonDownload = false;
-				labelButtonConn.Text = "CANCEL";                
-				panelStatus.Width = 0;
-				labelStatus.Text = "Подключение...";
+                buttonDownload = false;
+                labelButtonConn.Text = "CANCEL";
+                panelStatus.Width = 0;
+                labelStatus.Text = "Подключение...";
 
-				Downloader.Download( textBoxAddress.Text, Download_OnError, Download_OnStart, Download_OnFinished );
-			}
-			else
+                Downloader.Download( textBoxAddress.Text, Download_OnError, Download_OnStart, Download_OnFinished );
+            }
+            else
             {
                 buttonDownload = true;
                 labelButtonConn.Text = "DOWNLOAD";
@@ -84,47 +78,47 @@ namespace CTXMapDownloader
         }
 
         private void Download_OnError( string err )
-        {           
-			BeginInvoke( new MethodInvoker( delegate 
-			{ 
+        {
+            BeginInvoke( new MethodInvoker( delegate
+            {
                 buttonDownload = true;
                 labelButtonConn.Text = "DOWNLOAD";
                 buttonConn.Enabled = true;
-				labelStatus.Text = err;
-			} ) );          
+                labelStatus.Text = err;
+            } ) );
         }
 
         private void Download_OnStart()
         {
-			BeginInvoke( new MethodInvoker( delegate 
-			{ 
+            BeginInvoke( new MethodInvoker( delegate
+            {
                 buttonDownload = true;
                 labelButtonConn.Text = "DOWNLOAD";
                 buttonConn.Enabled = false;
-			} ) );  
+            } ) );
         }
 
         private void Download_OnFinished()
         {
- 			BeginInvoke( new MethodInvoker( delegate 
-			{ 
+            BeginInvoke( new MethodInvoker( delegate
+            {
                 buttonDownload = true;
                 labelButtonConn.Text = "DOWNLOAD";
                 buttonConn.Enabled = true;
                 panelStatus.Width = this.Width - panelStatus.Location.X * 2;
-				labelStatus.Text = "Завершено.";
-			} ) ); 
+                labelStatus.Text = "Завершено.";
+            } ) );
         }
 
-		protected override void WndProc( ref Message m )
+        protected override void WndProc( ref Message m )
         {
             base.WndProc( ref m );
             if ( m.Msg == WM_NCHITTEST )
                 m.Result = ( IntPtr )( HT_CAPTION );
         }
 
-		private void timer_Tick( object sender, EventArgs e )
-		{
+        private void timer_Tick( object sender, EventArgs e )
+        {
             if ( !Downloader.downloading )
                 return;
 
@@ -134,9 +128,9 @@ namespace CTXMapDownloader
 
             panelStatus.Size = new Size( ( int )( 4.87 * perc ), 24 );
 
-            labelStatus.Text = "[ "+ ( Downloader.mapNumber + 1 ) + " / " + Downloader.mapList.Count + " ] " + Downloader.mapList[ Downloader.mapNumber ]+"\n" + 
-            "скачено " + Math.Round( mBytesIn, 2 ) + " / " + Math.Round( mBytesTotal, 2 ) + " Mb\n" + 
+            labelStatus.Text = "[ "+ ( Downloader.mapNumber + 1 ) + " / " + Downloader.mapList.Count + " ] " + Downloader.mapList[ Downloader.mapNumber ]+"\n" +
+            "скачено " + Math.Round( mBytesIn, 2 ) + " / " + Math.Round( mBytesTotal, 2 ) + " Mb\n" +
             "";
-		}
-	}
+        }
+    }
 }
