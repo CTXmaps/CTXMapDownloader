@@ -169,6 +169,7 @@ namespace CTXMapDownloader
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "";
+            this.Icon = Properties.Resources.favicon;
             this.buttonExit.ResumeLayout(false);
             this.buttonConn.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -9,78 +9,21 @@ namespace CTXMapDownloader
 {
     public static class Config
     {
-        public const string FILE_NAME = "settings.cfg";
-        public const string PARAM_GAMEPATH = "gamepath";
         public const string CSGO_FOLDER = "Counter-Strike Global Offensive";
 
-        public static List<string> lines = new List<string>();
         public static string gamePath;
 
         public static void Initialize()
         {
-            if ( !File.Exists( FILE_NAME ) )
-            {
-                File.Create( FILE_NAME ).Close();
-            }
+            string path = Properties.Settings.Default.gamepath;
 
-            foreach ( string line in File.ReadLines( FILE_NAME ) )
-                lines.Add( line );
-
-            string path = GetString( PARAM_GAMEPATH );
-
-            if ( path != null && File.Exists( path + "\\csgo.exe" ) )
+            if ( path != null && !String.IsNullOrEmpty( path ) && File.Exists( path + "\\csgo.exe" ) )
             {
                 SetGameFolder( path );
                 return;
             }
 
             SearchForGamePath();
-        }
-
-        public static void SetString( string name, string value )
-        {
-            if ( lines.Count == 0 )
-            {
-                lines.Add( name + " = " + value );
-            }
-            else
-            {
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    string replaced = Regex.Replace( lines[i], @"\s+|\u0022+", "" );
-
-                    int pos = replaced.IndexOf( '=' );
-                    if (pos == -1)
-                        continue;
-
-                    if (replaced.Substring( 0, pos ).Equals( name ))
-                    {
-                        lines.RemoveAt( i );
-                        lines.Insert( i, name + " = " + value );
-                    }
-                }
-            }
-            File.WriteAllLines( FILE_NAME, lines );
-        }
-
-        public static string GetString( string name )
-        {
-            if ( lines.Count == 0 )
-                return null;
-
-            for ( int i = 0; i < lines.Count; i++ )
-            {
-                string replaced = Regex.Replace( lines[ i ], @"\s+|\u0022+", "" );
-
-                int pos = replaced.IndexOf( '=' );
-                if ( pos == -1 )
-                    continue;
-
-
-                if ( replaced.Substring( 0, pos ).Equals( name ) )
-                    return replaced.Substring( pos + 1 );
-            }
-            return null;
         }
 
         private static void SearchForGamePath()
@@ -152,7 +95,7 @@ namespace CTXMapDownloader
         private static void SetGameFolder( string path )
         {
             gamePath = path;
-            SetString( PARAM_GAMEPATH, gamePath );
+            Properties.Settings.Default.gamepath = gamePath;
         }
 
         public static bool IsGameFolderValid()
